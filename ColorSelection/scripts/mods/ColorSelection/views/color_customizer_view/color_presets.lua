@@ -8,7 +8,7 @@ local color_presets = {
 			{ name = "Player 3 (Green)", r = 84, g = 172, b = 121 },
 			{ name = "Player 4 (Blue)", r = 126, g = 153, b = 230 },
 			{ name = "Bot (Gray)", r = 128, g = 128, b = 128 },
-		}
+		},
 	},
 
 	{
@@ -51,7 +51,7 @@ local color_presets = {
 			{ name = "Red Medium", r = 158, g = 28, b = 16 },
 			{ name = "Blue Light", r = 107, g = 209, b = 241 },
 			{ name = "Disabled Text", r = 60, g = 60, b = 60 },
-		}
+		},
 	},
 
 	{
@@ -71,7 +71,7 @@ local color_presets = {
 			{ name = "Warp Charge Low", r = 251, g = 195, b = 86 },
 			{ name = "Warp Charge Medium", r = 245, g = 121, b = 21 },
 			{ name = "Warp Charge High", r = 246, g = 69, b = 69 },
-		}
+		},
 	},
 
 	{
@@ -82,7 +82,7 @@ local color_presets = {
 			{ name = "Difficulty 3 (Yellow)", r = 255, g = 234, b = 0 },
 			{ name = "Difficulty 4 (Orange)", r = 255, g = 84, b = 0 },
 			{ name = "Difficulty 5 (Red)", r = 255, g = 0, b = 0 },
-		}
+		},
 	},
 
 	{
@@ -94,7 +94,7 @@ local color_presets = {
 			{ name = "Rarity 4 (Purple)", r = 143, g = 94, b = 196 },
 			{ name = "Rarity 5 (Orange)", r = 208, g = 136, b = 48 },
 			{ name = "Rarity 6 (Red)", r = 198, g = 52, b = 53 },
-		}
+		},
 	},
 
 	{
@@ -120,7 +120,7 @@ local color_presets = {
 			{ name = "Teal", r = 0, g = 128, b = 128 },
 			{ name = "Maroon", r = 128, g = 0, b = 0 },
 			{ name = "Olive", r = 128, g = 128, b = 0 },
-		}
+		},
 	},
 
 	{
@@ -144,7 +144,7 @@ local color_presets = {
 			{ name = "Pink", r = 255, g = 192, b = 203 },
 			{ name = "Medium Violet Red", r = 199, g = 21, b = 133 },
 			{ name = "Pale Violet Red", r = 219, g = 112, b = 147 },
-		}
+		},
 	},
 
 	{
@@ -163,7 +163,7 @@ local color_presets = {
 			{ name = "Light Yellow", r = 255, g = 255, b = 224 },
 			{ name = "Lemon Chiffon", r = 255, g = 250, b = 205 },
 			{ name = "Light Golden Rod Yellow", r = 250, g = 250, b = 210 },
-		}
+		},
 	},
 
 	{
@@ -191,7 +191,7 @@ local color_presets = {
 			{ name = "Medium Aqua Marine", r = 102, g = 205, b = 170 },
 			{ name = "Medium Sea Green", r = 60, g = 179, b = 113 },
 			{ name = "Light Sea Green", r = 32, g = 178, b = 170 },
-		}
+		},
 	},
 
 	{
@@ -210,7 +210,7 @@ local color_presets = {
 			{ name = "Aqua Marine", r = 127, g = 255, b = 212 },
 			{ name = "Powder Blue", r = 176, g = 224, b = 230 },
 			{ name = "Cadet Blue", r = 95, g = 158, b = 160 },
-		}
+		},
 	},
 
 	{
@@ -229,7 +229,7 @@ local color_presets = {
 			{ name = "Medium Blue", r = 0, g = 0, b = 205 },
 			{ name = "Blue", r = 0, g = 0, b = 255 },
 			{ name = "Royal Blue", r = 65, g = 105, b = 225 },
-		}
+		},
 	},
 
 	{
@@ -251,7 +251,7 @@ local color_presets = {
 			{ name = "Violet", r = 238, g = 130, b = 238 },
 			{ name = "Magenta", r = 255, g = 0, b = 255 },
 			{ name = "Orchid", r = 218, g = 112, b = 214 },
-		}
+		},
 	},
 
 	{
@@ -266,7 +266,7 @@ local color_presets = {
 			{ name = "Burly Wood", r = 222, g = 184, b = 135 },
 			{ name = "Tan", r = 210, g = 180, b = 140 },
 			{ name = "Rosy Brown", r = 188, g = 143, b = 143 },
-		}
+		},
 	},
 
 	{
@@ -298,7 +298,7 @@ local color_presets = {
 			{ name = "Peach Puff", r = 255, g = 218, b = 185 },
 			{ name = "Papaya Whip", r = 255, g = 239, b = 213 },
 			{ name = "Lavender", r = 230, g = 230, b = 250 },
-		}
+		},
 	},
 
 	{
@@ -314,7 +314,7 @@ local color_presets = {
 			{ name = "Slate Gray", r = 112, g = 128, b = 144 },
 			{ name = "Light Slate Gray", r = 119, g = 136, b = 153 },
 			{ name = "Light Steel Blue", r = 176, g = 196, b = 222 },
-		}
+		},
 	},
 
 	{
@@ -357,7 +357,7 @@ local color_presets = {
 			{ name = "Warplock Bronze", r = 146, g = 125, b = 123 },
 			{ name = "XV88", r = 114, g = 73, b = 30 },
 			{ name = "Zandri Dust", r = 158, g = 145, b = 92 },
-		}
+		},
 	},
 
 	{
@@ -439,7 +439,7 @@ local color_presets = {
 			{ name = "Xereus Purple", r = 71, g = 31, b = 95 },
 			{ name = "Yriel Yellow", r = 255, g = 218, b = 0 },
 			{ name = "Zamesi Desert", r = 221, g = 160, b = 38 },
-		}
+		},
 	},
 
 	{
@@ -457,7 +457,7 @@ local color_presets = {
 			{ name = "Nuln Oil", r = 20, g = 16, b = 14 },
 			{ name = "Reikland Fleshshade", r = 202, g = 108, b = 77 },
 			{ name = "Seraphim Sepia", r = 215, g = 130, b = 75 },
-		}
+		},
 	},
 
 	{
@@ -489,7 +489,7 @@ local color_presets = {
 			{ name = "Underhive Ash", r = 192, g = 189, b = 129 },
 			{ name = "Verminlord Hide", r = 161, g = 105, b = 84 },
 			{ name = "Wrack White", r = 252, g = 251, b = 25 },
-		}
+		},
 	},
 
 	{
@@ -507,7 +507,7 @@ local color_presets = {
 			{ name = "Guilliman Blue", r = 47, g = 154, b = 214 },
 			{ name = "Lamenters Yellow", r = 255, g = 245, b = 107 },
 			{ name = "Waywatcher Green", r = 109, g = 192, b = 10 },
-		}
+		},
 	},
 }
 

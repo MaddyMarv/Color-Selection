@@ -10,8 +10,8 @@ local CONSTANTS = {
 	UUID_LENGTH_WITHOUT_HYPHENS = 32,
 	SLIDER_HOLD_DELAY = 0.5,
 	PLAYER_CHECK_INTERVAL = 1.0,
-	SWATCH_SIZE = {30, 20},
-	LINE_HEIGHT = 30
+	SWATCH_SIZE = { 30, 20 },
+	LINE_HEIGHT = 30,
 }
 
 local ColorUtils = {}
@@ -20,59 +20,134 @@ local function _is_player_valid(p)
 	return p ~= nil and not rawget(p, "__deleted")
 end
 
-local function _call_slot(p) return p:slot() end
-local function _call_account_id(p) return p:account_id() end
-local function _call_name(p) return p:name() end
-local function _call_profile(p) return p:profile() end
-local function _call_user_display_name(p) return p:user_display_name(nil, true) end
-local function _call_is_human_controlled(p) return p:is_human_controlled() end
-local function _call_is_bot(p) return (p.type and p:type() == "BotPlayer") or not p:is_human_controlled() end
+local function _call_slot(p)
+	return p:slot()
+end
+local function _call_account_id(p)
+	return p:account_id()
+end
+local function _call_name(p)
+	return p:name()
+end
+local function _call_profile(p)
+	return p:profile()
+end
+local function _call_user_display_name(p)
+	return p:user_display_name(nil, true)
+end
+local function _call_is_human_controlled(p)
+	return p:is_human_controlled()
+end
+local function _call_is_bot(p)
+	return (p.type and p:type() == "BotPlayer") or not p:is_human_controlled()
+end
 
-local function _get_player_slot(p) if not _is_player_valid(p) then return nil end; local s, r = pcall(_call_slot, p); return s and r or nil end
-local function _get_player_account_id(p) if not _is_player_valid(p) then return nil end; local s, r = pcall(_call_account_id, p); return s and r or nil end
-local function _get_player_name(p) if not _is_player_valid(p) then return nil end; local s, r = pcall(_call_name, p); return s and r or nil end
-local function _get_player_profile(p) if not _is_player_valid(p) then return nil end; local s, r = pcall(_call_profile, p); return s and r or nil end
-local function _get_user_display_name(p) if not _is_player_valid(p) then return nil end; local s, r = pcall(_call_user_display_name, p); return s and r or nil end
-local function _set_vector3_for_materials(unit, param, color, val) if Unit and Unit.set_vector3_for_materials then Unit.set_vector3_for_materials(unit, param, color, val) end end
-local function _get_is_human_controlled(p) if not _is_player_valid(p) then return false end; local s, r = pcall(_call_is_human_controlled, p); return s and r or false end
-local function _get_is_bot(p) if not _is_player_valid(p) then return false end; local s, r = pcall(_call_is_bot, p); return s and r or false end
-local function _call_mechanism_name(m) return m:mechanism_name() end
-local function _call_mission_name(m) return m:mission_name() end
-local function _get_mechanism_name(m) if not m then return nil end; local s, r = pcall(_call_mechanism_name, m); return s and r or nil end
-local function _get_mission_name(m) if not m then return nil end; local s, r = pcall(_call_mission_name, m); return s and r or nil end
+local function _get_player_slot(p)
+	if not _is_player_valid(p) then
+		return nil
+	end
+	local s, r = pcall(_call_slot, p)
+	return s and r or nil
+end
+local function _get_player_account_id(p)
+	if not _is_player_valid(p) then
+		return nil
+	end
+	local s, r = pcall(_call_account_id, p)
+	return s and r or nil
+end
+local function _get_player_name(p)
+	if not _is_player_valid(p) then
+		return nil
+	end
+	local s, r = pcall(_call_name, p)
+	return s and r or nil
+end
+local function _get_player_profile(p)
+	if not _is_player_valid(p) then
+		return nil
+	end
+	local s, r = pcall(_call_profile, p)
+	return s and r or nil
+end
+local function _get_user_display_name(p)
+	if not _is_player_valid(p) then
+		return nil
+	end
+	local s, r = pcall(_call_user_display_name, p)
+	return s and r or nil
+end
+local function _set_vector3_for_materials(unit, param, color, val)
+	if Unit and Unit.set_vector3_for_materials then
+		Unit.set_vector3_for_materials(unit, param, color, val)
+	end
+end
+local function _get_is_human_controlled(p)
+	if not _is_player_valid(p) then
+		return false
+	end
+	local s, r = pcall(_call_is_human_controlled, p)
+	return s and r or false
+end
+local function _get_is_bot(p)
+	if not _is_player_valid(p) then
+		return false
+	end
+	local s, r = pcall(_call_is_bot, p)
+	return s and r or false
+end
+local function _call_mechanism_name(m)
+	return m:mechanism_name()
+end
+local function _call_mission_name(m)
+	return m:mission_name()
+end
+local function _get_mechanism_name(m)
+	if not m then
+		return nil
+	end
+	local s, r = pcall(_call_mechanism_name, m)
+	return s and r or nil
+end
+local function _get_mission_name(m)
+	if not m then
+		return nil
+	end
+	local s, r = pcall(_call_mission_name, m)
+	return s and r or nil
+end
 
 function ColorUtils.normalize_to_rgb(color)
 	if not color or type(color) ~= "table" then
-		return {r = CONSTANTS.MAX_COLOR_VALUE, g = CONSTANTS.MAX_COLOR_VALUE, b = CONSTANTS.MAX_COLOR_VALUE}
+		return { r = CONSTANTS.MAX_COLOR_VALUE, g = CONSTANTS.MAX_COLOR_VALUE, b = CONSTANTS.MAX_COLOR_VALUE }
 	end
 
 	if color.r and color.g and color.b then
 		return {
 			r = math.clamp(color.r or CONSTANTS.MAX_COLOR_VALUE, 0, CONSTANTS.MAX_COLOR_VALUE),
 			g = math.clamp(color.g or CONSTANTS.MAX_COLOR_VALUE, 0, CONSTANTS.MAX_COLOR_VALUE),
-			b = math.clamp(color.b or CONSTANTS.MAX_COLOR_VALUE, 0, CONSTANTS.MAX_COLOR_VALUE)
+			b = math.clamp(color.b or CONSTANTS.MAX_COLOR_VALUE, 0, CONSTANTS.MAX_COLOR_VALUE),
 		}
 	elseif color[1] and color[2] and color[3] then
-
 		return {
 			r = math.clamp(color[2] or CONSTANTS.MAX_COLOR_VALUE, 0, CONSTANTS.MAX_COLOR_VALUE),
 			g = math.clamp(color[3] or CONSTANTS.MAX_COLOR_VALUE, 0, CONSTANTS.MAX_COLOR_VALUE),
-			b = math.clamp(color[4] or CONSTANTS.MAX_COLOR_VALUE, 0, CONSTANTS.MAX_COLOR_VALUE)
+			b = math.clamp(color[4] or CONSTANTS.MAX_COLOR_VALUE, 0, CONSTANTS.MAX_COLOR_VALUE),
 		}
 	end
 
-	return {r = CONSTANTS.MAX_COLOR_VALUE, g = CONSTANTS.MAX_COLOR_VALUE, b = CONSTANTS.MAX_COLOR_VALUE}
+	return { r = CONSTANTS.MAX_COLOR_VALUE, g = CONSTANTS.MAX_COLOR_VALUE, b = CONSTANTS.MAX_COLOR_VALUE }
 end
 
 function ColorUtils.rgb_to_argb(rgb)
-	return {CONSTANTS.MAX_COLOR_VALUE, rgb.r, rgb.g, rgb.b}
+	return { CONSTANTS.MAX_COLOR_VALUE, rgb.r, rgb.g, rgb.b }
 end
 
 function ColorUtils.argb_to_rgb(argb)
 	return {
 		r = argb[2] or CONSTANTS.MAX_COLOR_VALUE,
 		g = argb[3] or CONSTANTS.MAX_COLOR_VALUE,
-		b = argb[4] or CONSTANTS.MAX_COLOR_VALUE
+		b = argb[4] or CONSTANTS.MAX_COLOR_VALUE,
 	}
 end
 
@@ -83,18 +158,18 @@ mod.account_id_color_map = mod:persistent_table("account_id_color_map")
 
 function mod.get_default_color_value(prefix, component)
 	local defaults = {
-		slot1 = {r = 226, g = 210, b = 117},
-		slot2 = {r = 180, g = 88, b = 108},
-		slot3 = {r = 84, g = 172, b = 121},
-		slot4 = {r = 126, g = 153, b = 230},
-		bot = {r = 128, g = 128, b = 128},
-		veteran = {r = 84,  g = 172, b = 121},
-		zealot  = {r = 180, g = 88,  b = 108},
-		psyker  = {r = 126, g = 153, b = 230},
-		ogryn   = {r = 226, g = 210, b = 117},
-		broker  = {r = 217, g = 104, b = 41},
-		adamant = {r = 138, g = 43,  b = 226},
-		cryptic = {r = 32,  g = 178, b = 170},
+		slot1 = { r = 226, g = 210, b = 117 },
+		slot2 = { r = 180, g = 88, b = 108 },
+		slot3 = { r = 84, g = 172, b = 121 },
+		slot4 = { r = 126, g = 153, b = 230 },
+		bot = { r = 128, g = 128, b = 128 },
+		veteran = { r = 84, g = 172, b = 121 },
+		zealot = { r = 180, g = 88, b = 108 },
+		psyker = { r = 126, g = 153, b = 230 },
+		ogryn = { r = 226, g = 210, b = 117 },
+		broker = { r = 217, g = 104, b = 41 },
+		adamant = { r = 138, g = 43, b = 226 },
+		cryptic = { r = 32, g = 178, b = 170 },
 	}
 
 	local color_data = defaults[prefix]
@@ -124,22 +199,28 @@ local function pcall_safe(func, a, b, c, d)
 	return func(a, b, c, d)
 end
 
-
 local cached_saved_colors = nil
 local cached_saved_colors_loaded = false
 
 local function _get_cached_saved_colors()
-    if not cached_saved_colors_loaded then
-        cached_saved_colors = mod:get("saved_player_colors")
-        cached_saved_colors_loaded = true
-    end
-    return cached_saved_colors
+	if not cached_saved_colors_loaded then
+		cached_saved_colors = mod:get("saved_player_colors")
+		cached_saved_colors_loaded = true
+	end
+	return cached_saved_colors
 end
 
 local FLAG_SETTINGS = {
-	"force_local_slot_1", "color_bots", "color_by_class", "color_names",
-	"color_local_inside_mission", "color_local_outside_mission", "color_custom_outside_mission",
-	"color_outlines", "color_dog_outlines", "chat_local_name_style",
+	"force_local_slot_1",
+	"color_bots",
+	"color_by_class",
+	"color_names",
+	"color_local_inside_mission",
+	"color_local_outside_mission",
+	"color_custom_outside_mission",
+	"color_outlines",
+	"color_dog_outlines",
+	"chat_local_name_style",
 }
 local settings = {}
 local color_cache = {}
@@ -170,52 +251,52 @@ local ICON_STYLE_KEYS = { "texture", "icon", "class_icon", "text" }
 local get_color_for_account_id
 
 local color_customizer_view_name = "color_customizer"
-local color_customizer_view_path = "ColorSelection/scripts/mods/ColorSelection/views/color_customizer_view/color_customizer_view"
+local color_customizer_view_path =
+	"ColorSelection/scripts/mods/ColorSelection/views/color_customizer_view/color_customizer_view"
 
 mod:add_require_path(color_customizer_view_path)
 
 local registered_view = mod:register_view({
-    view_name = color_customizer_view_name,
-    view_settings = {
-        init_view_function = function(ingame_ui_context)
-            return true
-        end,
-        state_bound = true,
-        display_name = "loc_eye_color_sienna_desc",
-        path = color_customizer_view_path,
-        package = "packages/ui/views/credits_goods_vendor_view/credits_goods_vendor_view",
-        class = "ColorCustomizerView",
-        load_in_hub = false,
-        game_world_blur = 1,
-        enter_sound_events = {
-            "wwise/events/ui/play_ui_enter_short"
-        },
-        exit_sound_events = {
-            "wwise/events/ui/play_ui_back_short"
-        },
-        wwise_states = {},
-    },
-    view_transitions = {},
-    view_options = {
-        close_all = false,
-        close_previous = false,
-        close_transition_time = nil,
-        transition_time = nil
-    }
+	view_name = color_customizer_view_name,
+	view_settings = {
+		init_view_function = function(ingame_ui_context)
+			return true
+		end,
+		state_bound = true,
+		display_name = "loc_eye_color_sienna_desc",
+		path = color_customizer_view_path,
+		package = "packages/ui/views/credits_goods_vendor_view/credits_goods_vendor_view",
+		class = "ColorCustomizerView",
+		load_in_hub = false,
+		game_world_blur = 1,
+		enter_sound_events = {
+			"wwise/events/ui/play_ui_enter_short",
+		},
+		exit_sound_events = {
+			"wwise/events/ui/play_ui_back_short",
+		},
+		wwise_states = {},
+	},
+	view_transitions = {},
+	view_options = {
+		close_all = false,
+		close_previous = false,
+		close_transition_time = nil,
+		transition_time = nil,
+	},
 })
 
 function mod.open_color_customizer()
+	if Managers.ui:view_active(color_customizer_view_name) then
+		Managers.ui:close_view(color_customizer_view_name)
+		return
+	end
 
-    if Managers.ui:view_active(color_customizer_view_name) then
-        Managers.ui:close_view(color_customizer_view_name)
-        return
-    end
+	if Managers.ui:has_active_view() or Managers.ui:chat_using_input() then
+		return
+	end
 
-    if Managers.ui:has_active_view() or Managers.ui:chat_using_input() then
-        return
-    end
-
-    Managers.ui:open_view(color_customizer_view_name)
+	Managers.ui:open_view(color_customizer_view_name)
 end
 
 local function color_for_slot(slot)
@@ -267,7 +348,7 @@ local function get_local_player_slot()
 end
 
 local function get_slot_color(slot, is_local_player, is_bot)
-    local force_slot_1 = settings.force_local_slot_1 ~= false
+	local force_slot_1 = settings.force_local_slot_1 ~= false
 
 	if is_local_player and force_slot_1 then
 		return get_color("slot1")
@@ -282,7 +363,6 @@ local function get_slot_color(slot, is_local_player, is_bot)
 	if slot and slot >= 1 and slot <= 4 then
 		local lp_slot = get_local_player_slot()
 		if force_slot_1 and lp_slot ~= 1 and slot == 1 then
-
 			return get_color("slot" .. lp_slot)
 		end
 		return get_color("slot" .. slot)
@@ -295,13 +375,17 @@ local function compute_non_mission_context()
 	local mechanism_name = nil
 	if Managers.mechanism then
 		local success, result = pcall(_get_mechanism_name, Managers.mechanism)
-		if success then mechanism_name = result end
+		if success then
+			mechanism_name = result
+		end
 	end
 
 	local mission_name = nil
 	if Managers.state and Managers.state.mission then
 		local success, result = pcall(_get_mission_name, Managers.state.mission)
-		if success then mission_name = result end
+		if success then
+			mission_name = result
+		end
 	end
 
 	local ui = Managers.ui
@@ -356,11 +440,21 @@ local function should_color_names(is_local_player)
 end
 
 local function get_class_color(player)
-	if not player then return nil end
+	if not player then
+		return nil
+	end
 	local profile = pcall_safe(_get_player_profile, player)
 	if profile and profile.archetype and profile.archetype.name then
 		local archetype = profile.archetype.name
-		if archetype == "veteran" or archetype == "zealot" or archetype == "psyker" or archetype == "ogryn" or archetype == "broker" or archetype == "adamant" or archetype == "cryptic" then
+		if
+			archetype == "veteran"
+			or archetype == "zealot"
+			or archetype == "psyker"
+			or archetype == "ogryn"
+			or archetype == "broker"
+			or archetype == "adamant"
+			or archetype == "cryptic"
+		then
 			return get_color(archetype)
 		end
 	end
@@ -383,7 +477,7 @@ local function compute_color_for_account_id(account_id, slot)
 		local c = saved_colors[account_id]
 		if c and type(c) == "table" then
 			if not is_in_non_mission_context() or settings.color_custom_outside_mission then
-				return {255, c.r or 255, c.g or 255, c.b or 255}
+				return { 255, c.r or 255, c.g or 255, c.b or 255 }
 			end
 		end
 	end
@@ -441,7 +535,9 @@ local function compute_color_for_account_id(account_id, slot)
 		if not is_in_non_mission_context() or settings.color_local_outside_mission then
 			if settings.color_by_class and player and settings.force_local_slot_1 == false then
 				local class_color = get_class_color(player)
-				if class_color then return class_color end
+				if class_color then
+					return class_color
+				end
 			end
 			return get_slot_color(slot, true, false)
 		end
@@ -450,7 +546,9 @@ local function compute_color_for_account_id(account_id, slot)
 
 	if settings.color_by_class and player then
 		local class_color = get_class_color(player)
-		if class_color then return class_color end
+		if class_color then
+			return class_color
+		end
 	end
 
 	if not slot then
@@ -481,14 +579,16 @@ end
 local _player_cache = {
 	by_slot = {},
 	by_account_id = {},
-	last_update = 0
+	last_update = 0,
 }
 
 local function _on_player_removed(player)
 	if _player_cache then
 		_player_cache.last_update = 0
 	end
-	if not _is_player_valid(player) then return end
+	if not _is_player_valid(player) then
+		return
+	end
 
 	local success, account_id = pcall(_get_player_account_id, player)
 	if success and account_id and mod._player_custom_colors then
@@ -525,7 +625,9 @@ local function update_player_cache()
 end
 
 get_player_by_slot = function(slot)
-	if not slot then return nil end
+	if not slot then
+		return nil
+	end
 
 	local current_time = os.clock()
 	if current_time - _player_cache.last_update > 0.5 then
@@ -542,7 +644,9 @@ get_player_by_slot = function(slot)
 end
 
 get_player_by_account_id = function(account_id)
-	if not account_id then return nil end
+	if not account_id then
+		return nil
+	end
 
 	local current_time = os.clock()
 	if current_time - _player_cache.last_update > 0.5 then
@@ -584,7 +688,6 @@ local function apply_widget_color(panel)
 	local account_id = nil
 
 	if player then
-
 		local success, result = pcall(_get_player_slot, player)
 		if success and result then
 			slot = result
@@ -599,7 +702,6 @@ local function apply_widget_color(panel)
 			panel._player_slot = slot
 		end
 	else
-
 		slot = panel._player_slot
 		if slot then
 			player = get_player_by_slot(slot)
@@ -629,7 +731,11 @@ local function apply_widget_color(panel)
 			local style_pass = class_icon.style[ICON_STYLE_KEYS[i]]
 			if style_pass then
 				local c = style_pass.color or style_pass.text_color
-				if c and type(c) == "table" and (c[1] ~= 255 or c[2] ~= color[2] or c[3] ~= color[3] or c[4] ~= color[4]) then
+				if
+					c
+					and type(c) == "table"
+					and (c[1] ~= 255 or c[2] ~= color[2] or c[3] ~= color[3] or c[4] ~= color[4])
+				then
 					c[1], c[2], c[3], c[4] = 255, color[2], color[3], color[4]
 					class_icon.dirty = true
 				end
@@ -670,7 +776,12 @@ local function apply_widget_color(panel)
 		return
 	end
 
-	if text == panel._cs_name_text and panel._cs_r == color[2] and panel._cs_g == color[3] and panel._cs_b == color[4] then
+	if
+		text == panel._cs_name_text
+		and panel._cs_r == color[2]
+		and panel._cs_g == color[3]
+		and panel._cs_b == color[4]
+	then
 		return
 	end
 
@@ -691,14 +802,24 @@ local function alias_ability_bar_widget(panel)
 	if w.ability_bar then
 		w.ability_bar_widget = w.ability_bar
 	elseif not w.ability_bar_widget then
-		w.ability_bar_widget = { visible = false, dirty = false, style = { texture = { color = { 255, 255, 255, 255 }, size = { 0, 0 } } } }
+		w.ability_bar_widget = {
+			visible = false,
+			dirty = false,
+			style = { texture = { color = { 255, 255, 255, 255 }, size = { 0, 0 } } },
+		}
 	end
 end
 
-mod:hook_safe("HudElementPersonalPlayerPanel", "init", function(self) alias_ability_bar_widget(self) end)
-mod:hook_safe("HudElementTeamPlayerPanel",     "init", function(self) alias_ability_bar_widget(self) end)
+mod:hook_safe("HudElementPersonalPlayerPanel", "init", function(self)
+	alias_ability_bar_widget(self)
+end)
+mod:hook_safe("HudElementTeamPlayerPanel", "init", function(self)
+	alias_ability_bar_widget(self)
+end)
 
-mod:hook_safe("HudElementPlayerPanelBase",     "destroy", function(self) alias_ability_bar_widget(self) end)
+mod:hook_safe("HudElementPlayerPanelBase", "destroy", function(self)
+	alias_ability_bar_widget(self)
+end)
 
 mod:hook_safe("HudElementPersonalPlayerPanelHub", "update", function(self)
 	if mod:is_enabled() then
@@ -726,7 +847,6 @@ end)
 
 mod:hook_safe("HudElementTeamPlayerPanelHub", "update", function(self)
 	if mod:is_enabled() then
-
 		local player = self._player
 		if not player and self._data then
 			player = self._data.player
@@ -739,16 +859,20 @@ mod:hook_safe("HudElementTeamPlayerPanelHub", "update", function(self)
 				account_id = id_result
 			end
 
-
 			local color = get_color_for_account_id(account_id)
 
-			local class_icon = self._widgets_by_name and (self._widgets_by_name.class_icon or self._widgets_by_name.character_portrait)
+			local class_icon = self._widgets_by_name
+				and (self._widgets_by_name.class_icon or self._widgets_by_name.character_portrait)
 			if class_icon and class_icon.style and color then
 				for i = 1, #ICON_STYLE_KEYS do
 					local style_pass = class_icon.style[ICON_STYLE_KEYS[i]]
 					if style_pass then
 						local c = style_pass.color or style_pass.text_color
-						if c and type(c) == "table" and (c[1] ~= 255 or c[2] ~= color[2] or c[3] ~= color[3] or c[4] ~= color[4]) then
+						if
+							c
+							and type(c) == "table"
+							and (c[1] ~= 255 or c[2] ~= color[2] or c[3] ~= color[3] or c[4] ~= color[4])
+						then
 							c[1], c[2], c[3], c[4] = 255, color[2], color[3], color[4]
 							class_icon.dirty = true
 						end
@@ -783,8 +907,16 @@ mod:hook_safe("HudElementTeamPlayerPanelHub", "update", function(self)
 				return
 			end
 
-			if not self.tl_modified and not self.wru_modified
-				and not (text == self._cs_name_text and self._cs_r == color[2] and self._cs_g == color[3] and self._cs_b == color[4]) then
+			if
+				not self.tl_modified
+				and not self.wru_modified
+				and not (
+					text == self._cs_name_text
+					and self._cs_r == color[2]
+					and self._cs_g == color[3]
+					and self._cs_b == color[4]
+				)
+			then
 				local new_text = apply_color_to_name_only(text, color)
 				self._cs_name_text = new_text
 				self._cs_r, self._cs_g, self._cs_b = color[2], color[3], color[4]
@@ -798,274 +930,294 @@ mod:hook_safe("HudElementTeamPlayerPanelHub", "update", function(self)
 end)
 
 local function colourise_team_panels(handler)
-	if not mod:is_enabled() then return end
+	if not mod:is_enabled() then
+		return
+	end
 	local panels = handler and handler._player_panels_array
-	if not panels then return end
+	if not panels then
+		return
+	end
 	for i = 1, #panels do
 		local p = panels[i] and panels[i].panel
-		if p then apply_widget_color(p) end
+		if p then
+			apply_widget_color(p)
+		end
 	end
 end
 
 local function apply_nameplate_color(marker)
-    if not marker or not marker.widget or not mod:is_enabled() then
-        return
-    end
+	if not marker or not marker.widget or not mod:is_enabled() then
+		return
+	end
 
-    local player = marker.data
-    if not player then
-        return
-    end
+	local player = marker.data
+	if not player then
+		return
+	end
 
-    local slot = pcall_safe(_get_player_slot, player)
-    local account_id = pcall_safe(_get_player_account_id, player)
+	local slot = pcall_safe(_get_player_slot, player)
+	local account_id = pcall_safe(_get_player_account_id, player)
 
-    local is_saved_friend = false
-    local saved_colors = _get_cached_saved_colors()
-    if account_id and saved_colors and type(saved_colors) == "table" and saved_colors[account_id] then
-        is_saved_friend = true
-    end
+	local is_saved_friend = false
+	local saved_colors = _get_cached_saved_colors()
+	if account_id and saved_colors and type(saved_colors) == "table" and saved_colors[account_id] then
+		is_saved_friend = true
+	end
 
-    local is_local_player = account_id and account_id ~= "" and mod._local_player_account_id == account_id
+	local is_local_player = account_id and account_id ~= "" and mod._local_player_account_id == account_id
 
-    if is_in_non_mission_context() and not is_saved_friend and not is_local_player then
-        return
-    end
+	if is_in_non_mission_context() and not is_saved_friend and not is_local_player then
+		return
+	end
 
-    local marker_type = marker.type
-    if not is_saved_friend and not is_local_player and marker_type and string.find(marker_type, "hub", 1, true) then
-        local widget = marker.widget
-        local content = widget and widget.content
-        if content then
-            local changed = false
-            if content.header_text and string.find(content.header_text, "{#color", 1, true) then
-                local name_part, title_part = content.header_text:match("^([^\n]*)\n?(.*)$")
-                if not name_part then
-                    name_part = content.header_text
-                    title_part = ""
-                end
-                
-                local stripped_name = name_part:gsub("{#color%([^%)]*%)}", ""):gsub("{#reset%(%)}", "")
-                
-                local new_header = stripped_name
-                if title_part and title_part ~= "" then
-                    new_header = new_header .. "\n" .. title_part
-                end
-                
-                if content.header_text ~= new_header then
-                    content.header_text = new_header
-                    changed = true
-                end
-            end
-            if content.icon_text and string.find(content.icon_text, "{#color", 1, true) then
-                local stripped_icon = content.icon_text:gsub("{#color%([^%)]*%)}", ""):gsub("{#reset%(%)}", "")
-                if content.icon_text ~= stripped_icon then
-                    content.icon_text = stripped_icon
-                    changed = true
-                end
-            end
+	local marker_type = marker.type
+	if not is_saved_friend and not is_local_player and marker_type and string.find(marker_type, "hub", 1, true) then
+		local widget = marker.widget
+		local content = widget and widget.content
+		if content then
+			local changed = false
+			if content.header_text and string.find(content.header_text, "{#color", 1, true) then
+				local name_part, title_part = content.header_text:match("^([^\n]*)\n?(.*)$")
+				if not name_part then
+					name_part = content.header_text
+					title_part = ""
+				end
 
-            if changed then
-                widget.dirty = true
-                content.dirty = true
-            end
-            marker._cs_is_reset = true
-            marker._cs_colored_header = nil
-            marker._cs_r = nil
-        end
-        return
-    end
+				local stripped_name = name_part:gsub("{#color%([^%)]*%)}", ""):gsub("{#reset%(%)}", "")
 
-    local color = get_color_for_account_id(account_id, slot)
+				local new_header = stripped_name
+				if title_part and title_part ~= "" then
+					new_header = new_header .. "\n" .. title_part
+				end
 
-    local widget = marker.widget
-    local content = widget and widget.content
-    
-    if not color then
-        if is_local_player and is_in_non_mission_context() then
-            return
-        end
-        if content then
-            local changed = false
-            if content.header_text and string.find(content.header_text, "{#color", 1, true) then
-                local name_part, title_part = content.header_text:match("^([^\n]*)\n?(.*)$")
-                if not name_part then
-                    name_part = content.header_text
-                    title_part = ""
-                end
-                
-                local stripped_name = name_part:gsub("{#color%([^%)]*%)}", ""):gsub("{#reset%(%)}", "")
-                
-                local new_header = stripped_name
-                if title_part and title_part ~= "" then
-                    new_header = new_header .. "\n" .. title_part
-                end
-                
-                if content.header_text ~= new_header then
-                    content.header_text = new_header
-                    changed = true
-                end
-            end
-            if content.icon_text and string.find(content.icon_text, "{#color", 1, true) then
-                local stripped_icon = content.icon_text:gsub("{#color%([^%)]*%)}", ""):gsub("{#reset%(%)}", "")
-                if content.icon_text ~= stripped_icon then
-                    content.icon_text = stripped_icon
-                    changed = true
-                end
-            end
+				if content.header_text ~= new_header then
+					content.header_text = new_header
+					changed = true
+				end
+			end
+			if content.icon_text and string.find(content.icon_text, "{#color", 1, true) then
+				local stripped_icon = content.icon_text:gsub("{#color%([^%)]*%)}", ""):gsub("{#reset%(%)}", "")
+				if content.icon_text ~= stripped_icon then
+					content.icon_text = stripped_icon
+					changed = true
+				end
+			end
 
-            if changed then
-                widget.dirty = true
-                content.dirty = true
-            end
-            marker._cs_is_reset = true
-            marker._cs_colored_header = nil
-            marker._cs_r = nil
-        end
-        return
-    end
+			if changed then
+				widget.dirty = true
+				content.dirty = true
+			end
+			marker._cs_is_reset = true
+			marker._cs_colored_header = nil
+			marker._cs_r = nil
+		end
+		return
+	end
 
-    local is_companion = marker.type and string.find(marker.type, "companion", 1, true)
+	local color = get_color_for_account_id(account_id, slot)
 
-    if not content or (not content.header_text and not content.icon_text) then
-        return
-    end
+	local widget = marker.widget
+	local content = widget and widget.content
 
-    local color_names = should_color_names(is_local_player)
+	if not color then
+		if is_local_player and is_in_non_mission_context() then
+			return
+		end
+		if content then
+			local changed = false
+			if content.header_text and string.find(content.header_text, "{#color", 1, true) then
+				local name_part, title_part = content.header_text:match("^([^\n]*)\n?(.*)$")
+				if not name_part then
+					name_part = content.header_text
+					title_part = ""
+				end
 
-    if marker._cs_r == color[2] and marker._cs_g == color[3] and marker._cs_b == color[4] and marker._cs_colored_header == (content.header_text or "") and marker._cs_icon_text == content.icon_text and marker._cs_color_names == color_names then
-        local skip = true
-        if widget and widget.style then
-            local icon_style = widget.style.icon or widget.style.class_icon
-            if icon_style and icon_style.color then
-                local c = icon_style.color
-                if c[2] ~= color[2] or c[3] ~= color[3] or c[4] ~= color[4] then
-                    skip = false
-                end
-            end
-        end
-        if skip then return end
-    end
+				local stripped_name = name_part:gsub("{#color%([^%)]*%)}", ""):gsub("{#reset%(%)}", "")
 
-    local color_tag = string.format("{#color(%d,%d,%d)}", color[2], color[3], color[4])
-    local changed = false
+				local new_header = stripped_name
+				if title_part and title_part ~= "" then
+					new_header = new_header .. "\n" .. title_part
+				end
 
-    if widget and widget.style then
-        local icon_style = widget.style.icon or widget.style.class_icon
-        if icon_style and icon_style.color then
-            local c = icon_style.color
-            if c[2] ~= color[2] or c[3] ~= color[3] or c[4] ~= color[4] then
-                c[1], c[2], c[3], c[4] = 255, color[2], color[3], color[4]
-                changed = true
-            end
-        end
-    end
+				if content.header_text ~= new_header then
+					content.header_text = new_header
+					changed = true
+				end
+			end
+			if content.icon_text and string.find(content.icon_text, "{#color", 1, true) then
+				local stripped_icon = content.icon_text:gsub("{#color%([^%)]*%)}", ""):gsub("{#reset%(%)}", "")
+				if content.icon_text ~= stripped_icon then
+					content.icon_text = stripped_icon
+					changed = true
+				end
+			end
 
-    if content.header_text and type(content.header_text) == "string" then
-        if not color_names then
-            local stripped_header = content.header_text:gsub("{#color%([^%)]*%)}", ""):gsub("{#reset%(%)}", "")
-            if content.header_text ~= stripped_header then
-                content.header_text = stripped_header
-                marker._cs_last_header = nil
-                marker._cs_colored_header = stripped_header
-                changed = true
-            end
-        else
-            local header = content.header_text
+			if changed then
+				widget.dirty = true
+				content.dirty = true
+			end
+			marker._cs_is_reset = true
+			marker._cs_colored_header = nil
+			marker._cs_r = nil
+		end
+		return
+	end
 
-            if is_companion then
-                local companion_glyph = ""
-                local stripped_header = header:gsub("{#color%([^%)]*%)}", ""):gsub("{#reset%(%)}", "")
-                local companion_name = stripped_header:match(companion_glyph .. "%s*(.-)$") or stripped_header:match("%s*(.-)$") or stripped_header
-                
-                local new_header = color_tag .. companion_glyph .. "{#reset()} " .. companion_name
-                if content.header_text ~= new_header then
-                    content.header_text = new_header
-                    marker._cs_last_header = nil
-                    marker._cs_colored_header = new_header
-                    changed = true
-                end
-            else
-                local player_name = pcall_safe(_get_player_name, player)
-                if not player_name or player_name == "" then
-                    local name_part = header:match("^([^\n]*)")
-                    player_name = name_part and name_part:match("%w+") or header:match("%w+") or header
-                end
+	local is_companion = marker.type and string.find(marker.type, "companion", 1, true)
 
-                player_name = player_name:gsub("{#color%([^%)]*%)}", ""):gsub("{#reset%(%)}", "")
+	if not content or (not content.header_text and not content.icon_text) then
+		return
+	end
 
-                local name_part, title_part = header:match("^([^\n]*)\n?(.*)$")
-                if not name_part then
-                    name_part = header
-                    title_part = ""
-                end
+	local color_names = should_color_names(is_local_player)
 
-                local clean_name_part = name_part:gsub("{#color%([^%)]*%)}", ""):gsub("{#reset%(%)}", "")
-                local name_start, name_end = nil, nil
-                if player_name ~= "" then
-                    name_start, name_end = clean_name_part:find(player_name, 1, true)
-                end
+	if
+		marker._cs_r == color[2]
+		and marker._cs_g == color[3]
+		and marker._cs_b == color[4]
+		and marker._cs_colored_header == (content.header_text or "")
+		and marker._cs_icon_text == content.icon_text
+		and marker._cs_color_names == color_names
+	then
+		local skip = true
+		if widget and widget.style then
+			local icon_style = widget.style.icon or widget.style.class_icon
+			if icon_style and icon_style.color then
+				local c = icon_style.color
+				if c[2] ~= color[2] or c[3] ~= color[3] or c[4] ~= color[4] then
+					skip = false
+				end
+			end
+		end
+		if skip then
+			return
+		end
+	end
 
-                local new_name_part = nil
-                if name_start then
-                    local before_name = clean_name_part:sub(1, name_start - 1)
-                    local after_name = clean_name_part:sub(name_end + 1)
-                    new_name_part = color_tag .. before_name .. player_name .. "{#reset()}" .. after_name
-                elseif clean_name_part ~= "" then
-                    new_name_part = color_tag .. clean_name_part .. "{#reset()}"
-                end
+	local color_tag = string.format("{#color(%d,%d,%d)}", color[2], color[3], color[4])
+	local changed = false
 
-                if new_name_part then
-                    local new_header = new_name_part
-                    if title_part and title_part ~= "" then
-                        new_header = new_header .. "\n" .. title_part
-                    end
+	if widget and widget.style then
+		local icon_style = widget.style.icon or widget.style.class_icon
+		if icon_style and icon_style.color then
+			local c = icon_style.color
+			if c[2] ~= color[2] or c[3] ~= color[3] or c[4] ~= color[4] then
+				c[1], c[2], c[3], c[4] = 255, color[2], color[3], color[4]
+				changed = true
+			end
+		end
+	end
 
-                    if content.header_text ~= new_header then
-                        content.header_text = new_header
-                        marker._cs_last_header = nil
-                        marker._cs_colored_header = new_header
-                        changed = true
-                    end
-                end
-            end
-        end
-    end
+	if content.header_text and type(content.header_text) == "string" then
+		if not color_names then
+			local stripped_header = content.header_text:gsub("{#color%([^%)]*%)}", ""):gsub("{#reset%(%)}", "")
+			if content.header_text ~= stripped_header then
+				content.header_text = stripped_header
+				marker._cs_last_header = nil
+				marker._cs_colored_header = stripped_header
+				changed = true
+			end
+		else
+			local header = content.header_text
 
-    if content.icon_text then
-        local stripped_icon = content.icon_text:gsub("{#color%([^%)]*%)}", ""):gsub("{#reset%(%)}", "")
-        if stripped_icon ~= "" then
-            local new_icon = color_tag .. stripped_icon .. "{#reset()}"
-            if content.icon_text ~= new_icon then
-                content.icon_text = new_icon
-                changed = true
-            end
-        end
-    end
+			if is_companion then
+				local companion_glyph = ""
+				local stripped_header = header:gsub("{#color%([^%)]*%)}", ""):gsub("{#reset%(%)}", "")
+				local companion_name = stripped_header:match(companion_glyph .. "%s*(.-)$")
+					or stripped_header:match("%s*(.-)$")
+					or stripped_header
 
-    marker._cs_r, marker._cs_g, marker._cs_b = color[2], color[3], color[4]
-    marker._cs_colored_header = content.header_text or ""
-    marker._cs_icon_text = content.icon_text
-    marker._cs_color_names = color_names
+				local new_header = color_tag .. companion_glyph .. "{#reset()} " .. companion_name
+				if content.header_text ~= new_header then
+					content.header_text = new_header
+					marker._cs_last_header = nil
+					marker._cs_colored_header = new_header
+					changed = true
+				end
+			else
+				local player_name = pcall_safe(_get_player_name, player)
+				if not player_name or player_name == "" then
+					local name_part = header:match("^([^\n]*)")
+					player_name = name_part and name_part:match("%w+") or header:match("%w+") or header
+				end
 
-    if changed then
-        marker._cs_is_reset = false
+				player_name = player_name:gsub("{#color%([^%)]*%)}", ""):gsub("{#reset%(%)}", "")
 
-        if widget then
-            widget.dirty = true
-            if widget.content then
-                widget.content.dirty = true
-            end
-        end
-    end
+				local name_part, title_part = header:match("^([^\n]*)\n?(.*)$")
+				if not name_part then
+					name_part = header
+					title_part = ""
+				end
+
+				local clean_name_part = name_part:gsub("{#color%([^%)]*%)}", ""):gsub("{#reset%(%)}", "")
+				local name_start, name_end = nil, nil
+				if player_name ~= "" then
+					name_start, name_end = clean_name_part:find(player_name, 1, true)
+				end
+
+				local new_name_part = nil
+				if name_start then
+					local before_name = clean_name_part:sub(1, name_start - 1)
+					local after_name = clean_name_part:sub(name_end + 1)
+					new_name_part = color_tag .. before_name .. player_name .. "{#reset()}" .. after_name
+				elseif clean_name_part ~= "" then
+					new_name_part = color_tag .. clean_name_part .. "{#reset()}"
+				end
+
+				if new_name_part then
+					local new_header = new_name_part
+					if title_part and title_part ~= "" then
+						new_header = new_header .. "\n" .. title_part
+					end
+
+					if content.header_text ~= new_header then
+						content.header_text = new_header
+						marker._cs_last_header = nil
+						marker._cs_colored_header = new_header
+						changed = true
+					end
+				end
+			end
+		end
+	end
+
+	if content.icon_text then
+		local stripped_icon = content.icon_text:gsub("{#color%([^%)]*%)}", ""):gsub("{#reset%(%)}", "")
+		if stripped_icon ~= "" then
+			local new_icon = color_tag .. stripped_icon .. "{#reset()}"
+			if content.icon_text ~= new_icon then
+				content.icon_text = new_icon
+				changed = true
+			end
+		end
+	end
+
+	marker._cs_r, marker._cs_g, marker._cs_b = color[2], color[3], color[4]
+	marker._cs_colored_header = content.header_text or ""
+	marker._cs_icon_text = content.icon_text
+	marker._cs_color_names = color_names
+
+	if changed then
+		marker._cs_is_reset = false
+
+		if widget then
+			widget.dirty = true
+			if widget.content then
+				widget.content.dirty = true
+			end
+		end
+	end
 end
 
-mod:hook_safe("HudElementTeamPanelHandler", "update", function(self) colourise_team_panels(self) end)
+mod:hook_safe("HudElementTeamPanelHandler", "update", function(self)
+	colourise_team_panels(self)
+end)
 
 local nameplate_template_path = "scripts/ui/hud/elements/world_markers/templates/world_marker_template_nameplate"
 mod:hook_require(nameplate_template_path, function(template)
-	if not template then return end
-
+	if not template then
+		return
+	end
 
 	if template.on_enter then
 		template.__cs_original_on_enter = template.__cs_original_on_enter or template.on_enter
@@ -1074,8 +1226,6 @@ mod:hook_require(nameplate_template_path, function(template)
 			original_on_enter(widget, marker)
 
 			if mod:is_enabled() and marker and marker.data then
-
-
 				if marker.widget and marker.widget.content and marker.widget.content.header_text then
 					apply_nameplate_color(marker)
 				end
@@ -1091,18 +1241,24 @@ local companion_templates = {
 
 for _, template_path in ipairs(companion_templates) do
 	mod:hook_require(template_path, function(template)
-		if not template or not template.on_enter then return end
+		if not template or not template.on_enter then
+			return
+		end
 
 		template.__cs_original_on_enter = template.__cs_original_on_enter or template.on_enter
 		local original_on_enter = template.__cs_original_on_enter
 		template.on_enter = function(widget, marker)
 			original_on_enter(widget, marker)
 
-			if not mod:is_enabled() or not marker or not marker.data then return end
+			if not mod:is_enabled() or not marker or not marker.data then
+				return
+			end
 
 			local data = marker.data
 			local content = widget.content
-			if not content then return end
+			if not content then
+				return
+			end
 
 			local player_slot = pcall_safe(_get_player_slot, data)
 			local account_id = pcall_safe(_get_player_account_id, data)
@@ -1139,13 +1295,21 @@ for _, template_path in ipairs(companion_templates) do
 end
 
 mod:hook_safe("HudElementWorldMarkers", "event_add_world_marker_unit", function(self, marker_type, unit, callback, data)
-	if not mod:is_enabled() then return end
+	if not mod:is_enabled() then
+		return
+	end
 
-	if marker_type and (string.find(marker_type, "nameplate", 1, true) or string.find(marker_type, "companion", 1, true)) then
+	if
+		marker_type
+		and (string.find(marker_type, "nameplate", 1, true) or string.find(marker_type, "companion", 1, true))
+	then
 		local by_type = self._markers_by_type
 		if by_type then
 			for type_key, bucket in pairs(by_type) do
-				if type(type_key) == "string" and (string.find(type_key, "nameplate", 1, true) or string.find(type_key, "companion", 1, true)) then
+				if
+					type(type_key) == "string"
+					and (string.find(type_key, "nameplate", 1, true) or string.find(type_key, "companion", 1, true))
+				then
 					for _, marker in pairs(bucket) do
 						if marker.unit == unit and marker.widget and marker.widget.content then
 							apply_nameplate_color(marker)
@@ -1163,16 +1327,24 @@ local function check_roster_changes(t)
 	if not in_gameplay_state and Managers.state and Managers.state.game_mode and not is_in_non_mission_context() then
 		in_gameplay_state = true
 	end
-	if not in_gameplay_state or is_in_non_mission_context() then return end
+	if not in_gameplay_state or is_in_non_mission_context() then
+		return
+	end
 	local now = t or os.clock()
-	if now - _last_roster_check_t < CONSTANTS.PLAYER_CHECK_INTERVAL then return end
+	if now - _last_roster_check_t < CONSTANTS.PLAYER_CHECK_INTERVAL then
+		return
+	end
 	_last_roster_check_t = now
 
 	local pm = Managers and Managers.player
-	if not pm then return end
+	if not pm then
+		return
+	end
 
 	local changed = false
-	if not mod._known_slot_account_ids then mod._known_slot_account_ids = {} end
+	if not mod._known_slot_account_ids then
+		mod._known_slot_account_ids = {}
+	end
 
 	for slot = 1, 4 do
 		local player = get_player_by_slot(slot)
@@ -1185,7 +1357,10 @@ local function check_roster_changes(t)
 		end
 
 		local is_bot = player and _get_is_bot(player)
-		local norm = account_id or (is_bot and ("bot_" .. tostring(slot))) or (player and ("player_" .. tostring(slot))) or "empty"
+		local norm = account_id
+			or (is_bot and ("bot_" .. tostring(slot)))
+			or (player and ("player_" .. tostring(slot)))
+			or "empty"
 		if mod._known_slot_account_ids[slot] ~= norm then
 			mod._known_slot_account_ids[slot] = norm
 			changed = true
@@ -1202,14 +1377,19 @@ local nameplate_marker_types = {}
 local function is_nameplate_marker_type(marker_type)
 	local known = nameplate_marker_types[marker_type]
 	if known == nil then
-		known = type(marker_type) == "string" and (string.find(marker_type, "nameplate", 1, true) or string.find(marker_type, "companion", 1, true)) and true or false
+		known = type(marker_type) == "string"
+				and (string.find(marker_type, "nameplate", 1, true) or string.find(marker_type, "companion", 1, true))
+				and true
+			or false
 		nameplate_marker_types[marker_type] = known
 	end
 	return known
 end
 
 mod:hook_safe("HudElementNameplates", "update", function(self, dt, t, ui_renderer)
-	if not mod:is_enabled() then return end
+	if not mod:is_enabled() then
+		return
+	end
 
 	check_roster_changes(t)
 
@@ -1217,14 +1397,20 @@ mod:hook_safe("HudElementNameplates", "update", function(self, dt, t, ui_rendere
 		flush_pending_apply()
 	end
 
-	if not Managers or not Managers.ui then return end
+	if not Managers or not Managers.ui then
+		return
+	end
 
 	local ui_manager = Managers.ui
 	local hud = ui_manager._hud
-	if not hud then return end
+	if not hud then
+		return
+	end
 
 	local world_markers = hud.element and hud:element("HudElementWorldMarkers")
-	if not world_markers or not world_markers._markers_by_type then return end
+	if not world_markers or not world_markers._markers_by_type then
+		return
+	end
 
 	for marker_type, bucket in pairs(world_markers._markers_by_type) do
 		if is_nameplate_marker_type(marker_type) then
@@ -1242,7 +1428,11 @@ mod:hook(CLASS.ConstantElementChat, "_participant_displayname", function(func, s
 	if participant then
 		if participant.is_current_user then
 			is_local = true
-		elseif participant.account_id and mod._local_player_account_id and participant.account_id == mod._local_player_account_id then
+		elseif
+			participant.account_id
+			and mod._local_player_account_id
+			and participant.account_id == mod._local_player_account_id
+		then
 			is_local = true
 		end
 	end
@@ -1266,7 +1456,7 @@ mod:hook(CLASS.ConstantElementChat, "_participant_displayname", function(func, s
 			local player_info = account_id and Managers.data_service.social:get_player_info_by_account_id(account_id)
 			display_name = player_info and pcall_safe(_get_user_display_name, player_info)
 		end
-		
+
 		if not display_name then
 			display_name = mod:localize("loc_color_selection_you")
 			if type(display_name) ~= "string" or display_name == "" or display_name == "<loc_color_selection_you>" then
@@ -1295,7 +1485,7 @@ mod:hook(CLASS.ConstantElementChat, "_participant_displayname", function(func, s
 
 	local slot = nil
 	local player = get_player_by_account_id(account_id)
-	
+
 	if player then
 		slot = pcall_safe(_get_player_slot, player)
 	end
@@ -1315,29 +1505,35 @@ mod:hook(CLASS.ConstantElementChat, "_participant_displayname", function(func, s
 	return display_name
 end)
 
-mod:hook(CLASS.ConstantElementChat, "cb_chat_manager_message_recieved", function(func, self, channel_handle, participant, message)
-	if not mod:is_enabled() then
+mod:hook(
+	CLASS.ConstantElementChat,
+	"cb_chat_manager_message_recieved",
+	function(func, self, channel_handle, participant, message)
+		if not mod:is_enabled() then
+			return func(self, channel_handle, participant, message)
+		end
+
+		local participant_current = participant and participant.is_current_user
+		local message_current = message and message.is_current_user
+		local style = settings.chat_local_name_style or "colored_you"
+
+		if (participant_current or message_current) and style ~= "vanilla" then
+			local cloned_participant = participant and table.clone(participant) or nil
+			local cloned_message = message and table.clone(message) or nil
+
+			if cloned_participant then
+				cloned_participant.is_current_user = false
+			end
+			if cloned_message then
+				cloned_message.is_current_user = false
+			end
+
+			return func(self, channel_handle, cloned_participant, cloned_message)
+		end
+
 		return func(self, channel_handle, participant, message)
 	end
-
-	local participant_current = participant and participant.is_current_user
-	local message_current = message and message.is_current_user
-	local style = settings.chat_local_name_style or "colored_you"
-
-	if (participant_current or message_current) and style ~= "vanilla" then
-		local cloned_participant = participant and table.clone(participant) or nil
-		local cloned_message = message and table.clone(message) or nil
-		
-		if cloned_participant then cloned_participant.is_current_user = false end
-		if cloned_message then cloned_message.is_current_user = false end
-
-		return func(self, channel_handle, cloned_participant, cloned_message)
-	end
-
-	return func(self, channel_handle, participant, message)
-end)
-
-
+)
 
 local colored_names = {}
 
@@ -1462,7 +1658,8 @@ end)
 mod:hook(CLASS.PresenceEntryImmaterium, "character_name", function(func, self)
 	local name = func(self)
 
-	local account_id = (self.account_id and self:account_id()) or (self._immaterium_entry and self._immaterium_entry.account_id)
+	local account_id = (self.account_id and self:account_id())
+		or (self._immaterium_entry and self._immaterium_entry.account_id)
 	local is_local = account_id and mod._local_player_account_id and (account_id == mod._local_player_account_id)
 	if not mod:is_enabled() or not should_color_names(is_local) then
 		if name and type(name) == "string" and name:find("{#color") then
@@ -1516,17 +1713,20 @@ mod:hook_require("scripts/utilities/profile_utils", function(instance)
 end)
 
 local function install_player_panel_hooks(base)
-	if not base then return end
+	if not base then
+		return
+	end
 
 	mod:hook_safe(base, "update", function(self, dt, t, ui_renderer)
-
 		if mod:is_enabled() and self._widgets_by_name and self._widgets_by_name.player_name then
 			apply_widget_color(self)
 		end
 	end)
 
 	mod:hook_safe(base, "_update_player_name_prefix", function(self)
-		if not mod:is_enabled() then return end
+		if not mod:is_enabled() then
+			return
+		end
 		if self._colors_revision ~= mod._colors_revision then
 			self._colors_revision = mod._colors_revision
 			self._player_slot = nil
@@ -1536,12 +1736,13 @@ local function install_player_panel_hooks(base)
 	end)
 
 	mod:hook_safe(base, "_set_player_name", function(self)
-		if not mod:is_enabled() then return end
+		if not mod:is_enabled() then
+			return
+		end
 		apply_widget_color(self)
 	end)
 
 	mod:hook_safe(base, "_update_player_features", function(self, dt, t, player, ui_renderer)
-
 		if player then
 			self._player = player
 
@@ -1568,7 +1769,9 @@ local function install_player_panel_hooks(base)
 	end)
 end
 
-mod:hook_require("scripts/ui/hud/elements/player_panel_base/hud_element_player_panel_base", function(B) install_player_panel_hooks(B) end)
+mod:hook_require("scripts/ui/hud/elements/player_panel_base/hud_element_player_panel_base", function(B)
+	install_player_panel_hooks(B)
+end)
 
 mod._colors_revision = 0
 
@@ -1577,8 +1780,12 @@ local slot_colors_replaced = false
 
 local slot_color_metatable = {
 	__index = function(_, k)
-		if type(k) ~= "number" or k < 1 then return nil end
-		if is_in_non_mission_context() then return nil end
+		if type(k) ~= "number" or k < 1 then
+			return nil
+		end
+		if is_in_non_mission_context() then
+			return nil
+		end
 
 		local account_id = nil
 		local player = get_player_by_slot(k)
@@ -1608,13 +1815,19 @@ end
 
 local function update_world_markers()
 	local ui_manager = Managers and Managers.ui
-	if not ui_manager then return false end
+	if not ui_manager then
+		return false
+	end
 
 	local hud = ui_manager:get_hud()
-	if not hud then return false end
+	if not hud then
+		return false
+	end
 
 	local world_markers = hud:element("HudElementWorldMarkers")
-	if not world_markers or not world_markers._markers_by_id then return false end
+	if not world_markers or not world_markers._markers_by_id then
+		return false
+	end
 
 	for marker_id, marker in pairs(world_markers._markers_by_id) do
 		local marker_type = marker.type
@@ -1638,8 +1851,15 @@ local function update_world_markers()
 		local list = hewm and hewm._markers_by_type and hewm._markers_by_type.ringhud_teammate_tile
 		if list then
 			local function each(tbl, fn)
-				if #tbl > 0 then for i = 1, #tbl do fn(tbl[i]) end
-				else for _, v in pairs(tbl) do fn(v) end end
+				if #tbl > 0 then
+					for i = 1, #tbl do
+						fn(tbl[i])
+					end
+				else
+					for _, v in pairs(tbl) do
+						fn(v)
+					end
+				end
 			end
 			each(list, function(marker)
 				if marker then
@@ -1654,30 +1874,30 @@ local function update_world_markers()
 end
 
 local function update_player_panel_colors()
-
 	local ui_manager = Managers and Managers.ui
-	if not ui_manager or not ui_manager._hud then return false end
+	if not ui_manager or not ui_manager._hud then
+		return false
+	end
 
 	local hud = ui_manager._hud
 	local elements_array = hud._elements_array
-	if not elements_array then return false end
+	if not elements_array then
+		return false
+	end
 
 	for i = 1, #elements_array do
 		local element = elements_array[i]
 		if element then
 			local class_name = element.__class_name
 			if class_name == "HudElementPersonalPlayerPanel" or class_name == "HudElementPersonalPlayerPanelHub" then
-
 				element.wru_modified = false
 				element.tl_modified = false
 				apply_widget_color(element)
 			elseif class_name == "HudElementTeamPlayerPanel" or class_name == "HudElementTeamPlayerPanelHub" then
-
 				element.wru_modified = false
 				element.tl_modified = false
 				apply_widget_color(element)
 			elseif class_name == "HudElementTeamPanelHandler" then
-
 				if element._player_panels_array then
 					for _, data in ipairs(element._player_panels_array) do
 						if data.panel then
@@ -1750,7 +1970,9 @@ apply_slot_colors_internal = function()
 	table.clear(current_table)
 
 	for i = 1, 5 do
-		if is_in_non_mission_context() then break end
+		if is_in_non_mission_context() then
+			break
+		end
 
 		local account_id = nil
 		local player = get_player_by_slot(i)
@@ -1828,84 +2050,89 @@ end
 setup_state_your_name_integration()
 
 local function _strip_cs_color_tags(text)
-    if not text or type(text) ~= "string" then
-        return text
-    end
+	if not text or type(text) ~= "string" then
+		return text
+	end
 
-    local cleaned = text:gsub("{#color%(%d+,%d+,%d+%)}", ""):gsub("{#reset%(%)}", "")
-    return cleaned
+	local cleaned = text:gsub("{#color%(%d+,%d+,%d+%)}", ""):gsub("{#reset%(%)}", "")
+	return cleaned
 end
 
 local function reset_team_panel_colors()
-    local ui_manager = Managers and Managers.ui
-    if not ui_manager then
-        return
-    end
+	local ui_manager = Managers and Managers.ui
+	if not ui_manager then
+		return
+	end
 
-    local hud = ui_manager:get_hud()
-    if not hud then
-        return
-    end
+	local hud = ui_manager:get_hud()
+	if not hud then
+		return
+	end
 
-    local handler = hud:element("HudElementTeamPanelHandler")
-    if not handler or not handler._player_panels_array then
-        return
-    end
+	local handler = hud:element("HudElementTeamPanelHandler")
+	if not handler or not handler._player_panels_array then
+		return
+	end
 
-    for i = 1, #handler._player_panels_array do
-        local p = handler._player_panels_array[i] and handler._player_panels_array[i].panel
-        if p and p._widgets_by_name then
-            local class_icon = p._widgets_by_name.class_icon or p._widgets_by_name.character_portrait
-            if class_icon and class_icon.style and class_icon.style.texture then
-                local c = class_icon.style.texture.color
-                if c and type(c) == "table" then
-                    c[1], c[2], c[3], c[4] = 255, 255, 255, 255
-                    class_icon.dirty = true
-                end
-            end
+	for i = 1, #handler._player_panels_array do
+		local p = handler._player_panels_array[i] and handler._player_panels_array[i].panel
+		if p and p._widgets_by_name then
+			local class_icon = p._widgets_by_name.class_icon or p._widgets_by_name.character_portrait
+			if class_icon and class_icon.style and class_icon.style.texture then
+				local c = class_icon.style.texture.color
+				if c and type(c) == "table" then
+					c[1], c[2], c[3], c[4] = 255, 255, 255, 255
+					class_icon.dirty = true
+				end
+			end
 
-            local widget = p._widgets_by_name.player_name
-            if widget and widget.content and type(widget.content.text) == "string" then
-                widget.content.text = _strip_cs_color_tags(widget.content.text)
-                widget.dirty = true
-            end
-        end
-    end
+			local widget = p._widgets_by_name.player_name
+			if widget and widget.content and type(widget.content.text) == "string" then
+				widget.content.text = _strip_cs_color_tags(widget.content.text)
+				widget.dirty = true
+			end
+		end
+	end
 end
 
 local function reset_nameplate_colors()
-    local ui_manager = Managers and Managers.ui
-    if not ui_manager then
-        return
-    end
-    local hud = ui_manager._hud
-    if not hud then
-        return
-    end
-    local world_markers = hud:element("HudElementWorldMarkers")
-    if not world_markers or not world_markers._markers_by_id then
-        return
-    end
-    for _, marker in pairs(world_markers._markers_by_id) do
-        local marker_type = marker.type
-        if marker_type and (marker_type:match("nameplate") or marker_type:match("companion")) then
-            if marker.widget and marker.widget.content then
-                if marker.widget.content.header_text and type(marker.widget.content.header_text) == "string" then
-                    marker.widget.content.header_text = _strip_cs_color_tags(marker.widget.content.header_text)
-                    marker._cs_last_header = nil
-                end
-                if marker_type:match("companion") and marker.widget.content.icon_text and type(marker.widget.content.icon_text) == "string" then
-                    marker.widget.content.icon_text = _strip_cs_color_tags(marker.widget.content.icon_text)
-                end
-            end
-
-        end
-    end
+	local ui_manager = Managers and Managers.ui
+	if not ui_manager then
+		return
+	end
+	local hud = ui_manager._hud
+	if not hud then
+		return
+	end
+	local world_markers = hud:element("HudElementWorldMarkers")
+	if not world_markers or not world_markers._markers_by_id then
+		return
+	end
+	for _, marker in pairs(world_markers._markers_by_id) do
+		local marker_type = marker.type
+		if marker_type and (marker_type:match("nameplate") or marker_type:match("companion")) then
+			if marker.widget and marker.widget.content then
+				if marker.widget.content.header_text and type(marker.widget.content.header_text) == "string" then
+					marker.widget.content.header_text = _strip_cs_color_tags(marker.widget.content.header_text)
+					marker._cs_last_header = nil
+				end
+				if
+					marker_type:match("companion")
+					and marker.widget.content.icon_text
+					and type(marker.widget.content.icon_text) == "string"
+				then
+					marker.widget.content.icon_text = _strip_cs_color_tags(marker.widget.content.icon_text)
+				end
+			end
+		end
+	end
 end
 
 local function _is_dog_breed(breed)
 	local name = breed.name
-	return breed.breed_type == "companion" or (name and (string.find(name, "dog", 1, true) or string.find(name, "mastiff", 1, true))) and true or false
+	return breed.breed_type == "companion"
+		or (name and (string.find(name, "dog", 1, true) or string.find(name, "mastiff", 1, true))) and true
+		or false
 end
 
 local function _classify_non_player(unit, extension)
@@ -1951,18 +2178,27 @@ local function _apply_outline_color(unit, extension, owner)
 		return
 	end
 
-	local color = get_color_for_account_id(pcall_safe(_get_player_account_id, owner), pcall_safe(_get_player_slot, owner))
+	local color =
+		get_color_for_account_id(pcall_safe(_get_player_account_id, owner), pcall_safe(_get_player_slot, owner))
 	if not color then
 		return
 	end
 
 	local r, g, b, count = color[2], color[3], color[4], #outlines
 	local visible_layers = extension.visible_material_layers
-	if extension._cs_top == top_outline and extension._cs_count == count and extension._cs_r == r and extension._cs_g == g and extension._cs_b == b and extension._cs_visible == visible_layers then
+	if
+		extension._cs_top == top_outline
+		and extension._cs_count == count
+		and extension._cs_r == r
+		and extension._cs_g == g
+		and extension._cs_b == b
+		and extension._cs_visible == visible_layers
+	then
 		return
 	end
 	extension._cs_visible = visible_layers
-	extension._cs_top, extension._cs_count, extension._cs_r, extension._cs_g, extension._cs_b = top_outline, count, r, g, b
+	extension._cs_top, extension._cs_count, extension._cs_r, extension._cs_g, extension._cs_b =
+		top_outline, count, r, g, b
 	Unit.set_vector3_for_materials(unit, "outline_color", Vector3(r / 255, g / 255, b / 255), true)
 end
 
@@ -1974,13 +2210,17 @@ end
 
 local function reset_character_outlines()
 	local extension_manager = Managers and Managers.state and Managers.state.extension
-	if not extension_manager then return end
+	if not extension_manager then
+		return
+	end
 
 	local outline_system = extension_manager:system("outline_system")
-	if not outline_system or not outline_system._unit_extension_data then return end
+	if not outline_system or not outline_system._unit_extension_data then
+		return
+	end
 
 	local pm = Managers.player
-	local default_outline_color = Vector3(163/255, 255/255, 185/255)
+	local default_outline_color = Vector3(163 / 255, 255 / 255, 185 / 255)
 	for unit, extension in pairs(outline_system._unit_extension_data) do
 		_clear_outline_cache(extension)
 		local kind = extension._cs_kind
@@ -1992,14 +2232,24 @@ local function reset_character_outlines()
 end
 
 mod:hook_safe("OutlineSystem", "update", function(self)
-	if not mod:is_enabled() then return end
+	if not mod:is_enabled() then
+		return
+	end
 	local color_players, color_dogs = settings.color_outlines, settings.color_dog_outlines
-	if not color_players and not color_dogs then return end
-	if self._total_num_outlines == 0 then return end
-	if not self._visible then return end
+	if not color_players and not color_dogs then
+		return
+	end
+	if self._total_num_outlines == 0 then
+		return
+	end
+	if not self._visible then
+		return
+	end
 
 	local pm = Managers and Managers.player
-	if not pm then return end
+	if not pm then
+		return
+	end
 
 	for unit, extension in pairs(self._unit_extension_data) do
 		local kind = extension._cs_kind
@@ -2033,19 +2283,45 @@ mod:hook_safe("OutlineSystem", "update", function(self)
 	end
 end)
 
+mod:hook_require(
+	"scripts/ui/view_elements/view_element_player_social_popup/view_element_player_social_popup_content_list",
+	function(module)
+		if module.from_player_info then
+			module.__cs_original_from_player_info = module.__cs_original_from_player_info or module.from_player_info
+			local original_from_player_info = module.__cs_original_from_player_info
 
-mod:hook_require("scripts/ui/view_elements/view_element_player_social_popup/view_element_player_social_popup_content_list", function(module)
-	if module.from_player_info then
-		module.__cs_original_from_player_info = module.__cs_original_from_player_info or module.from_player_info
-		local original_from_player_info = module.__cs_original_from_player_info
+			module.from_player_info = function(parent, player_info)
+				local popup_menu_items, num_menu_items = original_from_player_info(parent, player_info)
 
-		module.from_player_info = function(parent, player_info)
-			local popup_menu_items, num_menu_items = original_from_player_info(parent, player_info)
+				if not player_info:is_own_player() and player_info:account_id() then
+					local account_id = player_info:account_id()
 
-			if not player_info:is_own_player() and player_info:account_id() then
-				local account_id = player_info:account_id()
+					local _add_divider = function(at_index)
+						local _get_next_list_item = function(at_index)
+							local last_item_index = num_menu_items + 1
+							local new_item = popup_menu_items[last_item_index]
 
-				local _add_divider = function(at_index)
+							if new_item then
+								table.clear(new_item)
+							else
+								new_item = {}
+								popup_menu_items[last_item_index] = new_item
+							end
+
+							if at_index then
+								popup_menu_items[last_item_index] = nil
+								table.insert(popup_menu_items, at_index, new_item)
+							end
+
+							num_menu_items = last_item_index
+							return new_item, last_item_index
+						end
+
+						local item, num_items = _get_next_list_item(at_index)
+						item.blueprint = "group_divider"
+						item.label = "divider_" .. num_items
+					end
+
 					local _get_next_list_item = function(at_index)
 						local last_item_index = num_menu_items + 1
 						local new_item = popup_menu_items[last_item_index]
@@ -2066,54 +2342,32 @@ mod:hook_require("scripts/ui/view_elements/view_element_player_social_popup/view
 						return new_item, last_item_index
 					end
 
-					local item, num_items = _get_next_list_item(at_index)
-					item.blueprint = "group_divider"
-					item.label = "divider_" .. num_items
+					_add_divider()
+
+					local copy_button = _get_next_list_item()
+					copy_button.blueprint = "button"
+					copy_button.label = mod:localize("copy_account_id_button")
+					copy_button.callback = function()
+						if account_id then
+							Clipboard.put(account_id)
+							mod:notify(mod:localize("account_id_copied"))
+						end
+					end
+					copy_button.on_pressed_sound = UISoundEvents.social_menu_see_player_profile
 				end
 
-				local _get_next_list_item = function(at_index)
-					local last_item_index = num_menu_items + 1
-					local new_item = popup_menu_items[last_item_index]
-
-					if new_item then
-						table.clear(new_item)
-					else
-						new_item = {}
-						popup_menu_items[last_item_index] = new_item
-					end
-
-					if at_index then
-						popup_menu_items[last_item_index] = nil
-						table.insert(popup_menu_items, at_index, new_item)
-					end
-
-					num_menu_items = last_item_index
-					return new_item, last_item_index
-				end
-
-				_add_divider()
-
-				local copy_button = _get_next_list_item()
-				copy_button.blueprint = "button"
-				copy_button.label = mod:localize("copy_account_id_button")
-				copy_button.callback = function()
-					if account_id then
-						Clipboard.put(account_id)
-						mod:notify(mod:localize("account_id_copied"))
-					end
-				end
-				copy_button.on_pressed_sound = UISoundEvents.social_menu_see_player_profile
+				return popup_menu_items, num_menu_items
 			end
-
-			return popup_menu_items, num_menu_items
 		end
 	end
-end)
+)
 
 mod.on_all_mods_loaded = function()
 	local career_outlines = get_mod("CareerColourOutlines")
 	if career_outlines and career_outlines:is_enabled() then
-		mod:echo("{#color(255,50,50)}[ColorSelection] WARNING:{#reset()} CareerColourOutlines is enabled! It conflicts with this mod and will cause outline colors to bug out. Please disable it!")
+		mod:echo(
+			"{#color(255,50,50)}[ColorSelection] WARNING:{#reset()} CareerColourOutlines is enabled! It conflicts with this mod and will cause outline colors to bug out. Please disable it!"
+		)
 	end
 
 	mod:add_global_localize_strings({
@@ -2122,7 +2376,7 @@ mod.on_all_mods_loaded = function()
 		},
 		preset_colors_title = {
 			en = "Preset Colors",
-		}
+		},
 	})
 
 	update_local_player_id()
@@ -2136,7 +2390,9 @@ mod.on_all_mods_loaded = function()
 	end
 
 	if mod.command then
-		mod:command("cs_menu", "open color customizer menu", function() mod.open_color_customizer() end)
+		mod:command("cs_menu", "open color customizer menu", function()
+			mod.open_color_customizer()
+		end)
 		mod:command("cs_sync", "sync/apply color settings", function()
 			if UISettings and in_gameplay_state then
 				apply_slot_colors()
@@ -2149,11 +2405,8 @@ mod.on_all_mods_loaded = function()
 
 	local dmf = get_mod("DMF")
 	if dmf then
-
 		mod:hook(dmf, "check_keybinds", function(func)
-
 			if Managers.ui and Managers.ui:view_active(color_customizer_view_name) then
-
 				return
 			end
 
@@ -2253,9 +2506,14 @@ mod.on_setting_changed = function(setting_id)
 	end
 	if string.find(setting_id, "slot%d") or string.find(setting_id, "bot_") or setting_id == "bot" then
 		triggers_update = true
-	elseif setting_id == "color_bots" or setting_id == "color_by_class"
-			or setting_id == "color_local_outside_mission" or setting_id == "color_custom_outside_mission"
-			or setting_id == "color_names" or setting_id == "color_local_inside_mission" then
+	elseif
+		setting_id == "color_bots"
+		or setting_id == "color_by_class"
+		or setting_id == "color_local_outside_mission"
+		or setting_id == "color_custom_outside_mission"
+		or setting_id == "color_names"
+		or setting_id == "color_local_inside_mission"
+	then
 		triggers_update = true
 	elseif setting_id == "force_local_slot_1" then
 		if settings.force_local_slot_1 == false then
@@ -2263,7 +2521,7 @@ mod.on_setting_changed = function(setting_id)
 		end
 		triggers_update = true
 	else
-		local classes = {"veteran", "zealot", "psyker", "ogryn", "broker", "adamant", "cryptic"}
+		local classes = { "veteran", "zealot", "psyker", "ogryn", "broker", "adamant", "cryptic" }
 		for _, class_name in ipairs(classes) do
 			if string.find(setting_id, class_name) then
 				triggers_update = true
@@ -2284,11 +2542,10 @@ mod.on_setting_changed = function(setting_id)
 		end
 	end
 
-
 	if setting_id == "color_outlines" or setting_id == "color_dog_outlines" then
-	    if in_gameplay_state then
-	        reset_character_outlines()
-	    end
+		if in_gameplay_state then
+			reset_character_outlines()
+		end
 	end
 end
 
@@ -2298,4 +2555,3 @@ mod.save_custom_player_colors = function(colors)
 		mod.on_setting_changed("saved_player_colors")
 	end
 end
-
