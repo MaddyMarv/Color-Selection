@@ -1,11 +1,8 @@
 local mod = get_mod("ColorSelection")
 
-local UIWidget = require("scripts/managers/ui/ui_widget")
 local UISoundEvents = require("scripts/settings/ui/ui_sound_events")
 local ViewElementInputLegend = require("scripts/ui/view_elements/view_element_input_legend/view_element_input_legend")
 local ViewElementGrid = require("scripts/ui/view_elements/view_element_grid/view_element_grid")
-local TextInputPassTemplates = require("scripts/ui/pass_templates/text_input_pass_templates")
-local ButtonPassTemplates = require("scripts/ui/pass_templates/button_pass_templates")
 
 local Definitions = mod:io_dofile(
 	"ColorSelection/scripts/mods/ColorSelection/views/color_customizer_view/color_customizer_view_definitions"
@@ -23,7 +20,6 @@ local CONSTANTS = {
 }
 
 local ColorUtils = mod.ColorUtils or {}
-local MOD_CONSTANTS = mod.CONSTANTS or CONSTANTS
 
 local function _get_player_slot(p)
 	return p:slot()
@@ -409,8 +405,7 @@ function ColorCustomizerView:_handle_focus_management(
 					end
 				end
 
-				if input_data.name == "account_id" then
-				else
+				if input_data.name ~= "account_id" then
 					if self._account_id_validation_pending then
 						self:_validate_account_id_on_blur()
 						self._account_id_validation_pending = false

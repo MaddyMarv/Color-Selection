@@ -35,9 +35,6 @@ end
 local function _call_user_display_name(p)
 	return p:user_display_name(nil, true)
 end
-local function _call_is_human_controlled(p)
-	return p:is_human_controlled()
-end
 local function _call_is_bot(p)
 	return (p.type and p:type() == "BotPlayer") or not p:is_human_controlled()
 end
@@ -81,13 +78,6 @@ local function _set_vector3_for_materials(unit, param, color, val)
 	if Unit and Unit.set_vector3_for_materials then
 		Unit.set_vector3_for_materials(unit, param, color, val)
 	end
-end
-local function _get_is_human_controlled(p)
-	if not _is_player_valid(p) then
-		return false
-	end
-	local s, r = pcall(_call_is_human_controlled, p)
-	return s and r or false
 end
 local function _get_is_bot(p)
 	if not _is_player_valid(p) then
@@ -256,7 +246,7 @@ local color_customizer_view_path =
 
 mod:add_require_path(color_customizer_view_path)
 
-local registered_view = mod:register_view({
+mod:register_view({
 	view_name = color_customizer_view_name,
 	view_settings = {
 		init_view_function = function(ingame_ui_context)
@@ -297,13 +287,6 @@ function mod.open_color_customizer()
 	end
 
 	Managers.ui:open_view(color_customizer_view_name)
-end
-
-local function color_for_slot(slot)
-	if not slot or slot < 1 then
-		return 1
-	end
-	return slot
 end
 
 local function get_color(prefix)
@@ -1422,7 +1405,7 @@ mod:hook_safe("HudElementNameplates", "update", function(self, dt, t, ui_rendere
 end)
 
 mod:hook(CLASS.ConstantElementChat, "_participant_displayname", function(func, self, participant)
-	local display_name = func(self, participant)
+	func(self, participant)
 
 	local is_local = false
 	if participant then
@@ -1915,9 +1898,6 @@ local function update_player_panel_colors()
 
 	return true
 end
-
-local last_debug_state = ""
-local logged_reassignments = {}
 
 local apply_slot_colors_internal
 local _last_apply_time = 0
