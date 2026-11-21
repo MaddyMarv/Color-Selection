@@ -4,14 +4,14 @@ local UISoundEvents = require("scripts/settings/ui/ui_sound_events")
 
 mod._shared = {}
 
-mod:io_dofile("ColorSelection/scripts/mods/ColorSelection/player_data")
-mod:io_dofile("ColorSelection/scripts/mods/ColorSelection/colors")
-mod:io_dofile("ColorSelection/scripts/mods/ColorSelection/team_panels")
-mod:io_dofile("ColorSelection/scripts/mods/ColorSelection/nameplates")
-mod:io_dofile("ColorSelection/scripts/mods/ColorSelection/slot_colors")
-mod:io_dofile("ColorSelection/scripts/mods/ColorSelection/roster")
-mod:io_dofile("ColorSelection/scripts/mods/ColorSelection/names")
-mod:io_dofile("ColorSelection/scripts/mods/ColorSelection/outlines")
+mod:io_dofile("ColorSelection/scripts/mods/ColorSelection/helpers/player_data")
+mod:io_dofile("ColorSelection/scripts/mods/ColorSelection/helpers/colors")
+mod:io_dofile("ColorSelection/scripts/mods/ColorSelection/features/team_panels")
+mod:io_dofile("ColorSelection/scripts/mods/ColorSelection/features/nameplates")
+mod:io_dofile("ColorSelection/scripts/mods/ColorSelection/features/slot_colors")
+mod:io_dofile("ColorSelection/scripts/mods/ColorSelection/features/squad_watch")
+mod:io_dofile("ColorSelection/scripts/mods/ColorSelection/features/names")
+mod:io_dofile("ColorSelection/scripts/mods/ColorSelection/features/outlines")
 
 local Shared = mod._shared
 local _get_player_account_id = Shared._get_player_account_id
