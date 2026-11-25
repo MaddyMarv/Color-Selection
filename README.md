@@ -9,7 +9,7 @@ Requires SLOTFIX to work properly.
 <summary><b>Mod Settings / Commands</b></summary>
 
 **General**
-- Open Color Customizer Menu (Hotkey)
+- Open Color Menu (Hotkey)
 - Always Use Slot 1 Color for Self
 - Color by Class
 - Color Player Outlines
@@ -22,11 +22,11 @@ Requires SLOTFIX to work properly.
 - Local Chat Name Style [Vanilla (Uncolored 'You'), Colored 'You', Colored Character Name, Colored Account Name]
 
 **Colors**
-- Custom Player Slot Colors (Slot 1, Slot 2, Slot 3, Slot 4, Bots)
-- Custom Class Colors (Veteran, Zealot, Psyker, Ogryn, Broker, Adamant, Cryptic)
+- Slot Colors (Slot 1 (Local Player), Slot 2, Slot 3, Slot 4, Bot Color)
+- Class Colors (Veteran, Zealot, Psyker, Ogryn, Hive Scum, Arbites, Skitarii)
 
 **Debug**
-- Debug Mode
+- Enable Debug Logging
 
 **Commands:**
 - `/cs_menu` - Open color customizer menu
