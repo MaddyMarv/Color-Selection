@@ -3,14 +3,14 @@
     "author": "IndicaBunny",
     "version": "3.5",
     "homepage": "https://www.nexusmods.com/warhammer40kdarktide/mods/631",
-    "source": "https://github.com/MaddyMarv/Color-Selection-AKA-Player-Slot-Color-Picker-",
+    "source": "https://github.com/MaddyMarv/Color-Selection",
     "funding": {
         "kofi": "https://ko-fi.com/indicabunny"
     },
     "description": "Set custom HUD colors for player slots, bots, or character classes.",
     "dependencies": {
         "required": [
-            "SLOTFIX"
+            "SlotFix"
         ],
         "self_after": [],
         "self_before": []
